@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMenu;
+use App\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MenuController extends Controller
 {
@@ -12,20 +15,24 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMenu $request)
     {
-        //
+        $menu = new Menu;
+        $menu->field = $request->field;
+        $menu->save();
+
+        return new Response($menu);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  mixed  $menu
+     * @param  int $menuId
      * @return \Illuminate\Http\Response
      */
-    public function show($menu)
+    public function show(int $menuId)
     {
-        //
+        return Response(Menu::findOrFail($menuId));
     }
 
     /**
@@ -37,7 +44,13 @@ class MenuController extends Controller
      */
     public function update(Request $request, $menu)
     {
-        //
+        $menu = Menu::findOrFail($menu);
+
+        $menu->field =  $request->field;
+
+        $menu->save();
+
+        return new Response($menu);
     }
 
     /**
@@ -48,6 +61,7 @@ class MenuController extends Controller
      */
     public function destroy($menu)
     {
-        //
+        $menu = Menu::findOrFail($menu);
+        $menu->delete();
     }
 }

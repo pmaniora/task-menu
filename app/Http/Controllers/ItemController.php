@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
@@ -14,7 +16,11 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item = new Item;
+        $item->field = $request->field;
+        $item->save();
+
+        return new Response($item);
     }
 
     /**
@@ -25,7 +31,7 @@ class ItemController extends Controller
      */
     public function show($item)
     {
-        //
+        return Response(Item::findOrFail($item));
     }
 
     /**
@@ -37,7 +43,13 @@ class ItemController extends Controller
      */
     public function update(Request $request, $item)
     {
-        //
+        $item = Item::findOrFail($item);
+
+        $item->field =  $request->field;
+
+        $item->save();
+
+        return new Response($item);
     }
 
     /**
@@ -48,6 +60,7 @@ class ItemController extends Controller
      */
     public function destroy($item)
     {
-        //
+        $item = Item::findOrFail($item);
+        $item->delete();
     }
 }
